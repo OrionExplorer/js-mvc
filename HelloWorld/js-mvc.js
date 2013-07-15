@@ -2,14 +2,14 @@
 	var global = this,
 		i = 0;
 
-	global.CoreJS = {
+	global.JSMVC = {
 		application : function(originalPath, config) {
 			global[originalPath] = config;
-			global.CoreJS['name'] = originalPath;
+			global.JSMVC['name'] = originalPath;
 
 			this.controllers = global[originalPath].controllers;
 			for(i = 0; i < this.controllers.length; i++) {
-				CoreJS.utils.loadController(this.controllers[i]);
+				JSMVC.utils.loadController(this.controllers[i]);
 			}
 
 			if(config && typeof config['launch'] === 'function') {
@@ -45,7 +45,7 @@
 						}
 					}
 					if(parts[1] === 'controller') {
-						CoreJS.utils.initController(config['name']);
+						JSMVC.utils.initController(config['name']);
 					}
 					if(typeof config['init'] === 'function') {
 						eval(originalPath+'.init()');
@@ -59,16 +59,16 @@
 				this.loadControllerModels(controllerName);
 			},
 			loadController : function(controllerName) {
-				this.loadJSFile(CoreJS.name+'/controller/'+controllerName+'/'+controllerName+'.js');
+				this.loadJSFile(JSMVC.name+'/controller/'+controllerName+'/'+controllerName+'.js');
 			},
 			loadModel : function(modelName) {
-				this.loadJSFile(CoreJS.name+'/model/'+modelName+'/'+modelName+'.js');
+				this.loadJSFile(JSMVC.name+'/model/'+modelName+'/'+modelName+'.js');
 			},
 			loadView : function(viewName) {
-				this.loadJSFile(CoreJS.name+'/view/'+viewName+'/'+viewName+'.js');
+				this.loadJSFile(JSMVC.name+'/view/'+viewName+'/'+viewName+'.js');
 			},
 			loadControllerViews : function(controllerName) {
-				var application = global[CoreJS.name],
+				var application = global[JSMVC.name],
 					controller = application.controller[controllerName],
 					views = controller.views,
 					i = 0;
@@ -78,7 +78,7 @@
 				}
 			},
 			loadControllerModels : function(controllerName) {
-				var application = global[CoreJS.name],
+				var application = global[JSMVC.name],
 					controller = application.controller[controllerName],
 					models = controller.models,
 					i = 0;

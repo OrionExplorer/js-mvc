@@ -1,4 +1,4 @@
-CoreJS.application('HelloWorld', {
+JSMVC.application('HelloWorld', {
 	controllers : ['Test'],
 
 	launch : function() { /* This method is not necessary */
