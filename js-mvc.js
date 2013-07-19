@@ -5,10 +5,26 @@
 		application : function(originalPath, config) {
 			var launchFunction = null,
 				controllers = [],
-				i = 0;
+				requires = [],
+				appPath = '',
+				i = 0, j = 0;
 
 			global[originalPath] = config;
 			global.JSMVC['name'] = originalPath;
+
+			appPath = global[originalPath].appPath;
+			if(typeof appPath != 'string') {
+				appPath = '';
+			}
+			global.JSMVC['appPath'] = appPath;
+
+			requires = global[originalPath].requires;
+
+			if(requires) {
+				for(j = 0; j < requires.length; j++) {
+					JSMVC.create(requires[j]);
+				}
+			}
 
 			controllers = global[originalPath].controllers;
 			for(i = 0; i < controllers.length; i++) {
@@ -26,7 +42,8 @@
 			var path = originalPath.split('.'),
 				newPath = path.join('/'),
 				parts = [],
-				parent = global;
+				parent = global,
+				i = 0;
 
 			if (originalPath !== '') {
 				parts = originalPath.split('.');
@@ -88,20 +105,21 @@
 		},
 		Utils : {
 			initController : function(controllerPath) {
+				this.loadControllerRequirements(controllerPath);
 				this.loadControllerViews(controllerPath);
 				this.loadControllerModels(controllerPath);
 			},
 			loadController : function(controllerName) {
-				this.loadJSFile(JSMVC.name+'/controller/'+controllerName+'/'+controllerName+'.js');
+				this.loadJSFile(JSMVC.name+'/controller/'+controllerName+'/'+controllerName);
 			},
 			loadModel : function(controllerName, modelName) {
-				this.loadJSFile(JSMVC.name+'/model/'+controllerName+'/'+modelName+'.js');
+				this.loadJSFile(JSMVC.name+'/model/'+controllerName+'/'+modelName);
 			},
 			loadView : function(controllerName, viewName) {
-				this.loadJSFile(JSMVC.name+'/view/'+controllerName+'/'+viewName+'.js');
+				this.loadJSFile(JSMVC.name+'/view/'+controllerName+'/'+viewName);
 			},
 			loadControllerViews : function(controllerName) {
-				var controller = JSMVC.Utils.getObjectValue(controllerName, null, global), //global[JSMVC.name],
+				var controller = JSMVC.Utils.getObjectValue(controllerName, null, global),
 					views = controller.views,
 					i = 0;
 				
@@ -112,7 +130,7 @@
 				}
 			},
 			loadControllerModels : function(controllerName) {
-				var controller = JSMVC.Utils.getObjectValue(controllerName, null, global), //global[JSMVC.name],
+				var controller = JSMVC.Utils.getObjectValue(controllerName, null, global),
 					models = controller.models,
 					i = 0;
 
@@ -122,10 +140,23 @@
 					}
 				}
 			},
+			loadControllerRequirements : function(controllerName) {
+				var controller = JSMVC.Utils.getObjectValue(controllerName, null, global),
+					requires = controller.requires,
+					i = 0;
+
+				if(requires) {
+					for(i = 0; i < requires.length; i++) {
+						this.loadJSFile(requires[i]);
+					}
+				}
+			},
 			loadJSFile : function(fileName, callback) {
-				var newFile = document.createElement('script');
+				var newFile = document.createElement('script'),
+					appPath = JSMVC.appPath ? JSMVC.appPath : '';
+
 				newFile.setAttribute('type', 'text/javascript');
-				newFile.setAttribute('src', fileName);
+				newFile.setAttribute('src', appPath+fileName+'.js');
 
 				if(callback) {
 					newFile.onreadystatechange = newFile.onload = callback();
