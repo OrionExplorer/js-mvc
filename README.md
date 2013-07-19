@@ -7,4 +7,5 @@ Sample Hello World application skeleton is provided.
 First step of development.
 
 TODO:
+- [x] Loading "requires" from JSMVC.application
 - [ ] MVC dependencies implementation;
