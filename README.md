@@ -7,5 +7,5 @@ Sample Hello World application skeleton is provided.
 First step of development.
 
 TODO:
-- [x] Loading "requires" from JSMVC.application
-- [ ] MVC dependencies implementation;
+* Eliminate object name directory (HelloWorld.controller.Test.Test -> HelloWorld.controller.Test)
+* MVC dependencies implementation;
