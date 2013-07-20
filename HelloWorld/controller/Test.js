@@ -1,4 +1,4 @@
-JSMVC.define('HelloWorld.controller.Test.Test', {
+JSMVC.define('HelloWorld.controller.Test', {
 	views : ['Test'],
 	models : ['Test'],
 	name : 'Test',
