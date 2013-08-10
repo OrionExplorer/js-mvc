@@ -161,7 +161,7 @@
 
 				if(requires) {
 					for(i = 0; i < requires.length; i++) {
-						this.loadJSFile(requires[i]);
+						global.JSMVC.create(requires[i]);
 					}
 				}
 			},
@@ -196,7 +196,7 @@
 					obj = obj[parts[i]];
 				}
 
-				return (typeof key === 'string' ?  obj[key] : obj);
+				return typeof key === 'string' ? obj.hasOwnProperty(key) ? obj[key] : obj : obj;
 			}
 		}
 	};
